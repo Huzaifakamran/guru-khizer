@@ -25,9 +25,9 @@ def checkCustID(data):
         # print(id)
         # print(type(id))
         # new_id = str(id)
-        data = requests.get(f'https://sheetdb.io/api/v1/7vcqtbvathyec/search?UniqueRef={id}')
+        data = requests.get(f'https://sheetdb.io/api/v1/zwq6ocyskcltz/search?UniqueRef={id}')
         result = data.json()
-        # print(result)
+        print("RESULT IS: ",result)
         if len(result):
             record = result[0]
             firstName = record['First Name']
