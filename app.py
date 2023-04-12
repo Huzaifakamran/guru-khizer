@@ -16,15 +16,17 @@ def webhook():
         elif data['queryResult']['intent']['displayName'] == '1.2.1-phone-id':
             reply = updatePhone(data)
             return jsonify(reply)
+        
+        elif data['queryResult']['intent']['displayName'] == '1.3.1-await-delivery-id':
+            reply = deliveryDetails(data)
+            return jsonify(reply)
+        
     except Exception as e:
         print('error main: ',e)
 
 def checkCustID(data):
     try:
         id = data['queryResult']['parameters']['id']
-        # print(id)
-        # print(type(id))
-        # new_id = str(id)
         data = requests.get(f'https://sheetdb.io/api/v1/zwq6ocyskcltz/search?UniqueRef={id}')
         result = data.json()
         print("RESULT IS: ",result)
@@ -74,6 +76,33 @@ def updatePhone(data):
         print(e)
 
     return reply
+
+def deliveryDetails(data):
+    try:
+        id = data['queryResult']['parameters']['id']
+        data = requests.get(f'https://sheetdb.io/api/v1/zwq6ocyskcltz/search?UniqueRef={id}')
+        result = data.json()
+        print("RESULT IS: ",result)
+        if len(result):
+            record = result[0]
+            orderDetails = record['Customer Confirmed Delivery Date']
+            print(orderDetails)
+            if orderDetails:
+                reply={
+                    'fulfillmentText': f"Your Order is Booked for {orderDetails}"
+                }
+            else:
+                reply={
+                    'fulfillmentText': "Your Order Has Not Been Booked For Delivery Yet"
+                }
+        else:
+            reply={
+                'fulfillmentText': "We didn't found any record against your given id."
+            }
+    except Exception as e:
+        print(e)
+    return reply
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0',port=port)
