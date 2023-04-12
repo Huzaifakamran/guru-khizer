@@ -27,7 +27,7 @@ def webhook():
 def checkCustID(data):
     try:
         id = data['queryResult']['parameters']['id']
-        data = requests.get(f'https://sheetdb.io/api/v1/zwq6ocyskcltz/search?UniqueRef={id}')
+        data = requests.get(f'https://sheetdb.io/api/v1/<api-key>/search?UniqueRef={id}')
         result = data.json()
         print("RESULT IS: ",result)
         if len(result):
@@ -98,7 +98,7 @@ def updatePhone(data):
     try:
         id = data['queryResult']['parameters']['id']
         phone = data['queryResult']['parameters']['phone']   
-        url = f'https://sheet.best/api/sheets/6310829d-6acb-4009-90c2-39fe2cdcbbc3/UniqueRef/{id}'
+        url = f'https://sheet.best/api/sheets/<api-key>/UniqueRef/{id}'
         payload = json.dumps({
             'Phone':phone
         })
@@ -168,7 +168,7 @@ def updatePhone(data):
 def deliveryDetails(data):
     try:
         id = data['queryResult']['parameters']['id']
-        data = requests.get(f'https://sheetdb.io/api/v1/zwq6ocyskcltz/search?UniqueRef={id}')
+        data = requests.get(f'https://sheetdb.io/api/v1/<api-key>/search?UniqueRef={id}')
         result = data.json()
         print("RESULT IS: ",result)
         if len(result):
